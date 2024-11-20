@@ -3,37 +3,36 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package demineur;
+
 import java.util.Scanner;
-/** PARTIE
+
+/**
+ * PARTIE
  *
  * @author danie
  */
 public class Partie {
+
     private GrilleDeJeu grilledejeu;
     private boolean finjeu;
     private boolean Victoire;
-    
-    
+    private int nbBombes;
+
     // Constructeur//
-    public Partie(int ligne, int colonne){
-        this.grilledejeu=new GrilleDeJeu(ligne,colonne);
-        this.finjeu=false;
-        this.Victoire=false;
-    // Methode//    
-    }     
-      public boolean estDansLaGrille(int ligne, int colonne) {
-        return ligne >= 0 && ligne < ligne && colonne >= 0 && colonne < colonne;}  
-    
-    public boolean revelerCellule(int ligne, int colonne) {
-        Cellule cellule = grille[ligne][colonne];
-        if (!cellule.isreveal()) {
-            cellule.revelerCellule();
-            return true;
-        }
-        
-        public boolean isVictoire() {
+    public Partie(int ligne, int colonne) {
+        this.grilledejeu = new GrilleDeJeu(ligne, colonne, nbBombes);
+        this.finjeu = false;
+        this.Victoire = false;
+        // Methode//    
+    }
+
+    public boolean estDansLaGrille(int ligne, int colonne) {
+        return ligne >= 0 && ligne < ligne && colonne >= 0 && colonne < colonne;
+    }
+
+    public boolean isVictoire() {
         // Vérifie si toutes les cellules sûres sont découvertes
-        for (int i = 0; i < ligne; i++) {
+        for (int i = 0; i < lignes; i++) {
             for (int j = 0; j < colonne; j++) {
                 Cellule cellule = grille[i][j];
                 if (!cellule.isreveal() && !cellule.contientBombe()) {
@@ -43,9 +42,8 @@ public class Partie {
         }
         return true;
     }
-        
-        
-         public void afficherGrille(boolean revelerTout) {
+
+    public void afficherGrille(boolean revelerTout) {
         for (int i = 0; i < ligne; i++) {
             for (int j = 0; j < colonne; j++) {
                 if (revelerTout) {
@@ -57,19 +55,13 @@ public class Partie {
             System.out.println();
         }
     }
-        
-        public Cellule getCellule(int ligne, int colonne) {
+
+    public Cellule getCellule(int ligne, int colonne) {
         return grilledejeu[ligne][colonne];
     }
 }
-        
-        
-        
-        
-        
-        
-    
-       public void lancer_jeu(){
+
+public void lancer_jeu(){
            Scanner scanner = new Scanner(System.in);
            System.out.println("bienvenue dans Demineur");
            grilledejeu.afficherGrille(false);
@@ -110,10 +102,3 @@ public class Partie {
 
         scanner.close();
     }
-
-         
-                
-
-
-    
-
