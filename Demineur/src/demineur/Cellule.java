@@ -33,15 +33,15 @@ public void ajouterbombe (){
     this.voisin++;
 }
 //Accesseurs 
-public boolean  Bombe(){
+public boolean  getBombe(){
     return Bombe ;   
 }       
         
-public boolean reveal(){
+public boolean getreveal(){
     return reveal;
 }
 
-public int voisin(){  
+public int getvoisin(){  
     return voisin ;
 }
 
