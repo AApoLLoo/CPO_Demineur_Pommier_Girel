@@ -14,7 +14,23 @@ public class Demineur {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        GrilleDeJeu grille = new GrilleDeJeu(5, 5, 5);
+        grille.PlacerBombes();
+        grille.BombesVoisines();
+
+        System.out.println("Grille initiale :");
+        System.out.println(grille);
+
+        try {
+            grille.revelerCellule(2, 2);
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+
+        System.out.println("Grille après révélation :");
+        System.out.println(grille);
+
+        System.out.println("Toutes les cellules sûres sont révélées : " + grille.ToutesCellules());
     }
 
 }
