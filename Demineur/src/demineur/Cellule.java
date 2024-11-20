@@ -32,6 +32,11 @@ public String isreveal (){
 public void ajouterbombe (){
     this.voisin++;
 }
+public void placerbombe(){
+    this.reveal=true;
+    
+}
+        
 //Accesseurs 
 public boolean  getBombe(){
     return Bombe ;   
@@ -45,7 +50,14 @@ public int getvoisin(){
     return voisin ;
 }
 
-
+@Override
+public String toString(){
+    if (reveal){
+        return isreveal();
+    }else{
+        return "■";
+    }
+}
 }
 
     
