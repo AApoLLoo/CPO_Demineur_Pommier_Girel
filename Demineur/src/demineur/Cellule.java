@@ -32,8 +32,8 @@ public String isreveal (){
 public void ajouterbombe (){
     this.voisin++;
 }
-public void placerbombe(){
-    this.reveal=true;
+public void placerbombe(boolean Bombe){
+    this.Bombe=Bombe;
     
 }
         
