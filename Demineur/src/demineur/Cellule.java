@@ -65,5 +65,6 @@ public String toString() {
         return " "; // Si révélée, pas de bombe, et bombes adjacentes = 0, retourne un espace
     }
 }
+}
 
     
