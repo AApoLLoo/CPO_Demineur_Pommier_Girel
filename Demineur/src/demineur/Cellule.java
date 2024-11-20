@@ -29,10 +29,10 @@ public String isreveal (){
             
         }
     }    
-public void ajouterbombe (){
+public void setajouterbombe (){
     this.voisin++;
 }
-public void placerbombe(boolean Bombe){
+public void setplacerbombe(boolean Bombe){
     this.Bombe=Bombe;
     
 }
@@ -48,6 +48,9 @@ public boolean getreveal(){
 
 public int getvoisin(){  
     return voisin ;
+}
+public void setBombesVoisines(int BombesVoisines){
+    this.voisin=BombesVoisines;
 }
 
 @Override
