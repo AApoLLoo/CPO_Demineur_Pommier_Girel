@@ -51,13 +51,16 @@ public int getvoisin(){
 }
 
 @Override
-public String toString(){
-    if (reveal){
-        return isreveal();
-    }else{
-        return "■";
+public String toString() {
+    if (!reveal) {
+        return "■"; // Si la cellule n'est pas encore dévoilée, retourne '?'
+    } else if (Bombe) {
+        return "💣"; // Si la cellule est révélée et contient une bombe, retourne 'B'
+    } else if (voisin > 0) {
+        return String.valueOf(voisin); // Si révélée et bombes adjacentes > 0, retourne le nombre
+    } else {
+        return " "; // Si révélée, pas de bombe, et bombes adjacentes = 0, retourne un espace
     }
-}
 }
 
     
