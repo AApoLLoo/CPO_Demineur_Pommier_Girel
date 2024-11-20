@@ -14,23 +14,13 @@ public class Demineur {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        GrilleDeJeu grille = new GrilleDeJeu(5, 5, 5);
-        grille.PlacerBombes();
-        grille.BombesVoisines();
+        Partie partie = new Partie();
 
-        System.out.println("Grille initiale :");
-        System.out.println(grille);
+        // Initialiser une partie avec une grille de 5x5, 5 bombes, et 3 vies
+        partie.initaliserPartie(5, 5, 5);
 
-        try {
-            grille.revelerCellule(2, 2);
-        } catch (RuntimeException e) {
-            System.out.println(e.getMessage());
-        }
-
-        System.out.println("Grille après révélation :");
-        System.out.println(grille);
-
-        System.out.println("Toutes les cellules sûres sont révélées : " + grille.ToutesCellules());
+        // Démarrer la partie
+        partie.demarrerPartie();
     }
 
 }
