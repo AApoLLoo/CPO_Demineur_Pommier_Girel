@@ -11,23 +11,27 @@ import java.util.Scanner;
  * @author danie
  */
 
-public class Partie {
+    public class Partie {
 
     private GrilleDeJeu grille;
     private boolean finjeu;
     private boolean Victoire;
     private int nbBombes;
 
-public void initaliserPartie(int nbLignes,int nbColonnes, int nbBombes){
+    public void initaliserPartie(int nbLignes,int nbColonnes, int nbBombes){
     this.grille = new GrilleDeJeu(nbLignes, nbColonnes, nbBombes);
     this.Victoire = false;
     grille.PlacerBombes();
     grille.BombesVoisines();
+    System.out.println("Grille actuelle :\n");
+    grille.afficherGrille();
 }
-public boolean verifierVictoire() {
+
+    public boolean verifierVictoire() {
         return grille.ToutesCellules();
     }
-public void Tour(int ligne, int colonne){
+
+    public void Tour(int ligne, int colonne){
     if (Victoire){
         System.out.println("La partie est terminée.");
         return;
@@ -44,12 +48,13 @@ public void Tour(int ligne, int colonne){
             System.out.println("Félicitations ! Vous avez révélé toutes les cellules sûres. Vous avez gagné !");
         }
     }
-public void demarrerPartie() {
+
+    public void demarrerPartie() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Bienvenue dans le jeu des mines !");
         System.out.println("Voici la grille initiale :");
-        System.out.println(grille);
+        grille.afficherGrille();
 
         while (!Victoire) {
             System.out.println("Options :");
@@ -68,12 +73,23 @@ public void demarrerPartie() {
                     System.out.print("Entrez la colonne : ");
                     int colonne = scanner.nextInt();
                     Tour(ligne, colonne);
+                    grille.afficherGrille();
                 }
-                case 2 -> System.out.println("Grille actuelle :\n" + grille);
+                case 2 -> {
+                    System.out.println("Grille actuelle :\n");
+                    grille.afficherGrille();
+                }
+
                 case 3 -> {
                     Victoire = true;
                     System.out.println("Merci d'avoir joué. À bientôt !");
                 }
+                case 4 -> {
+                    Victoire = true;
+                    System.out.println("Merci d'avoir joué. À bientôt !");
+                    break;
+                }
+
                 default -> System.out.println("Choix invalide. Veuillez réessayer.");
             }
 

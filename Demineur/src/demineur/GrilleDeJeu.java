@@ -120,13 +120,9 @@ public class GrilleDeJeu {
     }
 
     public void afficherGrille() {
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
-                if (matriceCellules[i][j].isBombe()) {
-                    System.out.println(" * ");
-                } else {
-                    System.out.println(" " + matriceCellules[i][j].isBombe() + " ");
-                }
+        for (int i = 0; i < matriceCellules.length; i++) {
+            for (int j = 0; j < matriceCellules[i].length; j++) {
+                System.out.print(matriceCellules[i][j] + " ");
             }
             System.out.println();
         }

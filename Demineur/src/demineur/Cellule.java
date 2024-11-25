@@ -25,7 +25,7 @@ public class Cellule {
 //Methode
     public String getreveal() {
         this.reveal = true;
-        if (Bombe = true) {
+        if (Bombe) {
             return "il y a une bombe";
         } else {
             return String.valueOf(voisin);
@@ -42,7 +42,7 @@ public class Cellule {
 
     }
 
-//Accesseurs 
+//Accessors
     public boolean isBombe() {
         return Bombe;
     }
