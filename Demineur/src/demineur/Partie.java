@@ -14,9 +14,7 @@ import java.util.Scanner;
     public class Partie {
 
     private GrilleDeJeu grille;
-    private boolean finjeu;
     private boolean Victoire;
-    private int nbBombes;
 
     public void initaliserPartie(int nbLignes,int nbColonnes, int nbBombes){
     this.grille = new GrilleDeJeu(nbLignes, nbColonnes, nbBombes);
@@ -24,7 +22,6 @@ import java.util.Scanner;
     grille.PlacerBombes();
     grille.BombesVoisines();
     System.out.println("Grille actuelle :\n");
-    grille.afficherGrille();
 }
 
     public boolean verifierVictoire() {
@@ -40,7 +37,9 @@ import java.util.Scanner;
             grille.revelerCellule(ligne, colonne);
             System.out.println("Cellule (" + ligne + ", " + colonne + ") révélée avec succès.");
         } catch (RuntimeException e) {
-            System.out.println("BOOM ! Vous avez révélé une bombe. Il vous reste tant de vie(s).");
+            grille.finjeu = true;
+            System.out.println("BOOM ! Vous avez révélé une bombe. Il vous reste tant de vies");
+
         }
 
         if (verifierVictoire()) {
@@ -56,7 +55,7 @@ import java.util.Scanner;
         System.out.println("Voici la grille initiale :");
         grille.afficherGrille();
 
-        while (!Victoire) {
+        while (!Victoire && !grille.finjeu) {
             System.out.println("Options :");
             System.out.println("1. Révéler une cellule");
             System.out.println("2. Afficher le nombre de vies restantes");
@@ -85,7 +84,7 @@ import java.util.Scanner;
                     System.out.println("Merci d'avoir joué. À bientôt !");
                 }
                 case 4 -> {
-                    Victoire = true;
+                    grille.finjeu = true;
                     System.out.println("Merci d'avoir joué. À bientôt !");
                     break;
                 }
@@ -93,9 +92,9 @@ import java.util.Scanner;
                 default -> System.out.println("Choix invalide. Veuillez réessayer.");
             }
 
-            if (!Victoire) {
+            if (!Victoire && !grille.finjeu) {
                 System.out.println("Grille actuelle :");
-                System.out.println(grille);
+                grille.afficherGrille();
             }
         }
 
