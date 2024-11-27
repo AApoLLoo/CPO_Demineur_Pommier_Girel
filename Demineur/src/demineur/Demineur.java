@@ -14,7 +14,7 @@ public class Demineur {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Partie partie = new Partie(5, 5, 5);
+        Partie partie = new Partie(10, 10, 10, 3);
         partie.jouer();
     }
 

@@ -6,24 +6,30 @@ package demineur;
 import java.util.Scanner;
 
 /**
- * PARTIE
- *
+ * PARTIE DEMINEUR
  * @author Antoine Girel/Pommier
  */
 
     public class Partie {
     private final GrilleDeJeu grille;
     private boolean enCours;
+    private int vies;
 
-    public Partie(int lignes, int colonnes, int nombreDeBombes) {
+    public Partie(int lignes, int colonnes, int nombreDeBombes, int vies) {
         grille = new GrilleDeJeu(lignes, colonnes, nombreDeBombes);
         enCours = true;
+        this.vies = vies;
+    }
+    public void clearConsole(){
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public void jouer() {
         Scanner scanner = new Scanner(System.in);
 
         while (enCours) {
+            clearConsole();
             System.out.println("Options :");
             System.out.println("1. Révéler une cellule");
             System.out.println("2. Afficher le nombre de vies restantes");
@@ -33,23 +39,35 @@ import java.util.Scanner;
             int choice = scanner.nextInt();
             switch(choice) {
                 case 1:
-                    System.out.print("Entrez la ligne et la colonne à révéler (ex: 0 1): ");
-                    int ligne = scanner.nextInt();
-                    int colonne = scanner.nextInt();
-                    if (grille.estBombe(ligne, colonne)) {
-                        System.out.println("BOUM! Vous avez cliqué sur une bombe. Vous avez perdu.");
-                        enCours = false;
-                    } else {
-                        grille.revelerCellule(ligne, colonne);
-                        if (grille.aGagne()) {
-                            System.out.println("Félicitations! Vous avez révélé toutes les cellules sans bombe. Vous avez gagné!");
-                            enCours = false;
+                    boolean validInput = false;
+                    while (!validInput) {
+                        System.out.print("Entrez la ligne et la colonne à révéler (ex: 0 1): ");
+                        int ligne = scanner.nextInt();
+                        int colonne = scanner.nextInt();
+                        if (ligne >= 0 && ligne < grille.getLignes() && colonne >= 0 && colonne < grille.getColonnes()) {
+                            validInput = true;
+                            if (grille.estBombe(ligne, colonne)) {
+                                System.out.println("BOUM! Vous avez cliqué sur une bombe. Vous avez perdu une vie.");
+                                vies -= 1;
+                                if (vies == 0) {
+                                    System.out.println("Vous n'avez plus de vies. Vous avez perdu.");
+                                    enCours = false;
+                                }
+                            } else {
+                                grille.revelerCellule(ligne, colonne);
+                                if (grille.aGagne()) {
+                                    System.out.println("Félicitations! Vous avez révélé toutes les cellules sans bombe. Vous avez gagné!");
+                                    enCours = false;
+                                }
+                            }
+                            grille.afficherGrille();
+                        } else {
+                            System.out.println("Coordonnées invalides.");
                         }
                     }
-                    grille.afficherGrille();
-                    break;
+                        break;
                 case 2:
-                    System.out.println("Il vous reste "); //+ grille.getVies() + " vies.");
+                    System.out.println("Il vous reste "+vies+" vies.");
                     break;
                 case 3:
                     grille.afficherGrille();
@@ -61,10 +79,10 @@ import java.util.Scanner;
                     System.out.println("Choix invalide.");
             }
             }
-        grille.afficherGrille();
         scanner.close();
     }
 }
+
 
     
 
