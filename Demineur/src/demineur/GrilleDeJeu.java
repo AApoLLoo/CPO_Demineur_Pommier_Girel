@@ -16,6 +16,7 @@ public class GrilleDeJeu {
     private int lignes;
     private int colonnes;
     private int Bombes;
+    public boolean finjeu;
 
     public GrilleDeJeu(int lignes, int colonnes, int bombes) {
         this.lignes = lignes;
@@ -27,6 +28,7 @@ public class GrilleDeJeu {
             }
         }
         this.Bombes = bombes;
+        this.finjeu = false;
     }
 
     public int getNbLignes() {
@@ -82,31 +84,29 @@ public class GrilleDeJeu {
     }
 
     public void revelerCellule(int ligne, int colonne) {
-        if (ligne < 0 || ligne >= lignes || colonne < 0 || colonne >= colonnes) {
-            return;
-        }
-        Cellule cellule = matriceCellules[ligne][colonne];
-        if (cellule.isreveal()) {
-            return;
-        }
-        cellule.setreveal(true);
-        if (cellule.isBombe()) {
-            throw new RuntimeException("Bombe révélée !! Fin de la partie !");
-        }
-        if (cellule.getvoisin() == 0) {
-            for (int di = -1; di <= 1; di++) {
-                for (int dj = -1; dj < +1; dj++) {
-                    if (di != 0 || dj != 0) {
-                        revelerCellule(ligne + di, colonne + dj);
-                    }
+    if (ligne < 0 || ligne >= lignes || colonne < 0 || colonne >= colonnes) {
+        return;
+    }
+    Cellule cellule = matriceCellules[ligne][colonne];
+    if (cellule.isreveal()) {
+        return;
+    }
+    cellule.setreveal(true);
+    if (cellule.isBombe()) {
+         finjeu = true;
+        System.out.println("Bombe révélée !! Fin de la partie !");
+    } else if (cellule.getvoisin() == 0) {
+        int[] directions = {-1, 0, 1};
+        for (int di : directions) {
+            for (int dj : directions) {
+                if (di == 0 && dj == 0) {
+                    continue;
                 }
+                revelerCellule(ligne + di, colonne + dj);
             }
         }
     }
-
-    public boolean getPresenceBombes(int i, int j) {
-        return matriceCellules[i][j].isBombe();
-    }
+}
 
     public boolean ToutesCellules() {
         for (int i = 0; i < lignes; i++) {
@@ -120,13 +120,9 @@ public class GrilleDeJeu {
     }
 
     public void afficherGrille() {
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
-                if (matriceCellules[i][j].isBombe()) {
-                    System.out.println(" * ");
-                } else {
-                    System.out.println(" " + matriceCellules[i][j].isBombe() + " ");
-                }
+        for (int i = 0; i < matriceCellules.length; i++) {
+            for (int j = 0; j < matriceCellules[i].length; j++) {
+                System.out.print(matriceCellules[i][j] + " ");
             }
             System.out.println();
         }

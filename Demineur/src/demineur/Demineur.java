@@ -6,7 +6,7 @@ package demineur;
 
 /**
  *
- * @author pommi
+ * @author Antoine Girel/Pommier
  */
 public class Demineur {
 
@@ -17,7 +17,7 @@ public class Demineur {
         Partie partie = new Partie();
 
         // Initialiser une partie avec une grille de 5x5, 5 bombes, et 3 vies
-        partie.initaliserPartie(5, 5, 5);
+        partie.initaliserPartie(5, 5, 25);
 
         // Démarrer la partie
         partie.demarrerPartie();

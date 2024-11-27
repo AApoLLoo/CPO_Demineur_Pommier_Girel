@@ -11,23 +11,24 @@ import java.util.Scanner;
  * @author danie
  */
 
-public class Partie {
+    public class Partie {
 
     private GrilleDeJeu grille;
-    private boolean finjeu;
     private boolean Victoire;
-    private int nbBombes;
 
-public void initaliserPartie(int nbLignes,int nbColonnes, int nbBombes){
+    public void initaliserPartie(int nbLignes,int nbColonnes, int nbBombes){
     this.grille = new GrilleDeJeu(nbLignes, nbColonnes, nbBombes);
     this.Victoire = false;
     grille.PlacerBombes();
     grille.BombesVoisines();
+    System.out.println("Grille actuelle :\n");
 }
-public boolean verifierVictoire() {
+
+    public boolean verifierVictoire() {
         return grille.ToutesCellules();
     }
-public void Tour(int ligne, int colonne){
+
+    public void Tour(int ligne, int colonne){
     if (Victoire){
         System.out.println("La partie est terminée.");
         return;
@@ -36,7 +37,9 @@ public void Tour(int ligne, int colonne){
             grille.revelerCellule(ligne, colonne);
             System.out.println("Cellule (" + ligne + ", " + colonne + ") révélée avec succès.");
         } catch (RuntimeException e) {
-            System.out.println("BOOM ! Vous avez révélé une bombe. Il vous reste tant de vie(s).");
+            grille.finjeu = true;
+            System.out.println("BOOM ! Vous avez révélé une bombe. Il vous reste tant de vies");
+
         }
 
         if (verifierVictoire()) {
@@ -44,14 +47,15 @@ public void Tour(int ligne, int colonne){
             System.out.println("Félicitations ! Vous avez révélé toutes les cellules sûres. Vous avez gagné !");
         }
     }
-public void demarrerPartie() {
+
+    public void demarrerPartie() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("Bienvenue dans le jeu des mines !");
         System.out.println("Voici la grille initiale :");
-        System.out.println(grille);
+        grille.afficherGrille();
 
-        while (!Victoire) {
+        while (!Victoire && !grille.finjeu) {
             System.out.println("Options :");
             System.out.println("1. Révéler une cellule");
             System.out.println("2. Afficher le nombre de vies restantes");
@@ -68,18 +72,29 @@ public void demarrerPartie() {
                     System.out.print("Entrez la colonne : ");
                     int colonne = scanner.nextInt();
                     Tour(ligne, colonne);
+                    grille.afficherGrille();
                 }
-                case 2 -> System.out.println("Grille actuelle :\n" + grille);
+                case 2 -> {
+                    System.out.println("Grille actuelle :\n");
+                    grille.afficherGrille();
+                }
+
                 case 3 -> {
                     Victoire = true;
                     System.out.println("Merci d'avoir joué. À bientôt !");
                 }
+                case 4 -> {
+                    grille.finjeu = true;
+                    System.out.println("Merci d'avoir joué. À bientôt !");
+                    break;
+                }
+
                 default -> System.out.println("Choix invalide. Veuillez réessayer.");
             }
 
-            if (!Victoire) {
+            if (!Victoire && !grille.finjeu) {
                 System.out.println("Grille actuelle :");
-                System.out.println(grille);
+                grille.afficherGrille();
             }
         }
 
