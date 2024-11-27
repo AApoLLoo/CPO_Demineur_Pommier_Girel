@@ -11,10 +11,10 @@ import java.util.Random;
  * @author pommi
  */
 public class GrilleDeJeu {
-    private Cellule[][] grille;
-    private int lignes;
-    private int colonnes;
-    private int nombreDeBombes;
+    private final Cellule[][] grille;
+    private final int lignes;
+    private final int colonnes;
+    private final int nombreDeBombes;
 
     public GrilleDeJeu(int lignes, int colonnes, int nombreDeBombes) {
         this.lignes = lignes;
@@ -23,9 +23,14 @@ public class GrilleDeJeu {
         this.grille = new Cellule[lignes][colonnes];
 
         // Initialiser la grille avec des cellules vides
+        Random rand = new Random();
         for (int i = 0; i < lignes; i++) {
             for (int j = 0; j < colonnes; j++) {
-                grille[i][j] = new Cellule();
+                if (rand.nextDouble() < 0.2) { // 20% des cases sont des murs
+                    grille[i][j] = null;
+                } else {
+                    grille[i][j] = new Cellule();
+                }
             }
         }
 
@@ -111,7 +116,9 @@ public class GrilleDeJeu {
     public void afficherGrille() {
         for (int i = 0; i < lignes; i++) {
             for (int j = 0; j < colonnes; j++) {
-                if (grille[i][j].estRevelee()) {
+                if (grille[i][j] == null) {
+                    System.out.print("# "); // Mur
+                } else if (grille[i][j].estRevelee()) {
                     if (grille[i][j].contientBombe()) {
                         System.out.print("* ");
                     } else {
@@ -124,4 +131,5 @@ public class GrilleDeJeu {
             System.out.println();
         }
     }
+
 }
