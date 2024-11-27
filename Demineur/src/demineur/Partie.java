@@ -12,92 +12,36 @@ import java.util.Scanner;
  */
 
     public class Partie {
-
     private GrilleDeJeu grille;
-    private boolean Victoire;
+    private boolean enCours;
 
-    public void initaliserPartie(int nbLignes,int nbColonnes, int nbBombes){
-    this.grille = new GrilleDeJeu(nbLignes, nbColonnes, nbBombes);
-    this.Victoire = false;
-    grille.PlacerBombes();
-    grille.BombesVoisines();
-    System.out.println("Grille actuelle :\n");
-}
-
-    public boolean verifierVictoire() {
-        return grille.ToutesCellules();
+    public Partie(int lignes, int colonnes, int nombreDeBombes) {
+        grille = new GrilleDeJeu(lignes, colonnes, nombreDeBombes);
+        enCours = true;
     }
 
-    public void Tour(int ligne, int colonne){
-    if (Victoire){
-        System.out.println("La partie est terminée.");
-        return;
-    }
-    try {
-            grille.revelerCellule(ligne, colonne);
-            System.out.println("Cellule (" + ligne + ", " + colonne + ") révélée avec succès.");
-        } catch (RuntimeException e) {
-            grille.finjeu = true;
-            System.out.println("BOOM ! Vous avez révélé une bombe. Il vous reste tant de vies");
-
-        }
-
-        if (verifierVictoire()) {
-            Victoire = true;
-            System.out.println("Félicitations ! Vous avez révélé toutes les cellules sûres. Vous avez gagné !");
-        }
-    }
-
-    public void demarrerPartie() {
+    public void jouer() {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Bienvenue dans le jeu des mines !");
-        System.out.println("Voici la grille initiale :");
-        grille.afficherGrille();
+        while (enCours) {
+            grille.afficherGrille();
+            System.out.print("Entrez la ligne et la colonne à révéler (ex: 0 1): ");
+            int ligne = scanner.nextInt();
+            int colonne = scanner.nextInt();
 
-        while (!Victoire && !grille.finjeu) {
-            System.out.println("Options :");
-            System.out.println("1. Révéler une cellule");
-            System.out.println("2. Afficher le nombre de vies restantes");
-            System.out.println("3. Afficher la grille");
-            System.out.println("4. Quitter la partie");
-
-            System.out.print("Entrez votre choix : ");
-            int choix = scanner.nextInt();
-
-            switch (choix) {
-                case 1 -> {
-                    System.out.print("Entrez la ligne : ");
-                    int ligne = scanner.nextInt();
-                    System.out.print("Entrez la colonne : ");
-                    int colonne = scanner.nextInt();
-                    Tour(ligne, colonne);
-                    grille.afficherGrille();
+            if (grille.estBombe(ligne, colonne)) {
+                System.out.println("BOUM! Vous avez cliqué sur une bombe. Vous avez perdu.");
+                enCours = false;
+            } else {
+                grille.revelerCellule(ligne, colonne);
+                if (grille.aGagne()) {
+                    System.out.println("Félicitations! Vous avez révélé toutes les cellules sans bombe. Vous avez gagné!");
+                    enCours = false;
                 }
-                case 2 -> {
-                    System.out.println("Grille actuelle :\n");
-                    grille.afficherGrille();
-                }
-
-                case 3 -> {
-                    Victoire = true;
-                    System.out.println("Merci d'avoir joué. À bientôt !");
-                }
-                case 4 -> {
-                    grille.finjeu = true;
-                    System.out.println("Merci d'avoir joué. À bientôt !");
-                    break;
-                }
-
-                default -> System.out.println("Choix invalide. Veuillez réessayer.");
-            }
-
-            if (!Victoire && !grille.finjeu) {
-                System.out.println("Grille actuelle :");
-                grille.afficherGrille();
             }
         }
 
+        grille.afficherGrille();
         scanner.close();
     }
 }

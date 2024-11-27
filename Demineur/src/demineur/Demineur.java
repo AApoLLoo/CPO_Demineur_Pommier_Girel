@@ -14,13 +14,8 @@ public class Demineur {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Partie partie = new Partie();
-
-        // Initialiser une partie avec une grille de 5x5, 5 bombes, et 3 vies
-        partie.initaliserPartie(5, 5, 25);
-
-        // Démarrer la partie
-        partie.demarrerPartie();
+        Partie partie = new Partie(5, 5, 5);
+        partie.jouer();
     }
 
 }

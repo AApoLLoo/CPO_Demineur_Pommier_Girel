@@ -10,69 +10,38 @@ package demineur;
  * @author danie
  */
 public class Cellule {
+    private boolean bombe;
+    private boolean revelee;
+    private int bombesAdjacentes;
 
-    boolean Bombe;
-    boolean reveal;
-    int voisin;
-//Constructeur
-
-    public Cellule(boolean Bombe) {
-        this.Bombe = Bombe;
-        this.reveal = false;
-        this.voisin = 0;
+    public Cellule() {
+        this.bombe = false;
+        this.revelee = false;
+        this.bombesAdjacentes = 0;
     }
 
-//Methode
-    public String getreveal() {
-        this.reveal = true;
-        if (Bombe) {
-            return "il y a une bombe";
-        } else {
-            return String.valueOf(voisin);
-
-        }
+    public boolean contientBombe() {
+        return bombe;
     }
 
-    public void setajouterbombe() {
-        this.voisin++;
+    public void placerBombe() {
+        this.bombe = true;
     }
 
-    public void setplacerbombe(boolean Bombe) {
-        this.Bombe = Bombe;
-
+    public boolean estRevelee() {
+        return revelee;
     }
 
-//Accessors
-    public boolean isBombe() {
-        return Bombe;
+    public void reveler() {
+        this.revelee = true;
     }
 
-    public boolean isreveal() {
-        return reveal;
+    public int getBombesAdjacentes() {
+        return bombesAdjacentes;
     }
 
-    public void setreveal(boolean reveal) {
-        this.reveal = reveal;
-    }
-
-    public int getvoisin() {
-        return voisin;
-    }
-
-    public void setBombesVoisines(int BombesVoisines) {
-        this.voisin = BombesVoisines;
-    }
-
-    @Override
-    public String toString() {
-        if (!reveal) {
-            return "■"; // Si la cellule n'est pas encore dévoilée, retourne '?'
-        } else if (Bombe) {
-            return "💣"; // Si la cellule est révélée et contient une bombe, retourne 'B'
-        } else if (voisin > 0) {
-            return String.valueOf(voisin); // Si révélée et bombes adjacentes > 0, retourne le nombre
-        } else {
-            return " "; // Si révélée, pas de bombe, et bombes adjacentes = 0, retourne un espace
-        }
+    public void setBombesAdjacentes(int bombesAdjacentes) {
+        this.bombesAdjacentes = bombesAdjacentes;
     }
 }
+
