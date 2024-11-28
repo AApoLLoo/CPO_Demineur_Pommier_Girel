@@ -15,6 +15,8 @@ public class Demineur {
      */
     public static void main(String[] args) {
         Partie partie = new Partie(10, 10, 10, 3);
+        Interface_Graphique interfaceGraphique = new Interface_Graphique();
+        interfaceGraphique.show();
         partie.jouer();
     }
 
