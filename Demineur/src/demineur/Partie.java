@@ -53,8 +53,17 @@ import java.util.Scanner;
             }
         scanner.close();
     }
+    public int getVies() {
+        return vies;
+    }
+
+    public GrilleDeJeu getGrille() {
+        return grille;
+    }
+
     public void jouer() {
         while (enCours) {
+
             Scanner scanner = new Scanner(System.in);
             boolean validInput = false;
             while (!validInput) {
@@ -68,6 +77,7 @@ import java.util.Scanner;
                         vies -= 1;
                         if (vies == 0) {
                             System.out.println("Vous n'avez plus de vies. Vous avez perdu.");
+                            System.out.println("Le nombre de vies restantes était de " + vies);
                             enCours = false;
                         }
                     } else {

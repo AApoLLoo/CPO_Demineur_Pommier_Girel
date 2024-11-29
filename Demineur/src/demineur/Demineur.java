@@ -11,7 +11,7 @@ package demineur;
 public class Demineur {
 
     /**
-     * @param args the command line arguments
+     *
      */
     public static void main(String[] args) {
         InterfaceGraphique interfaceGraphique = new InterfaceGraphique();
