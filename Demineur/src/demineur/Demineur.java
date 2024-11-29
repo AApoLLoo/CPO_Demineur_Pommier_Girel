@@ -14,10 +14,10 @@ public class Demineur {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        InterfaceGraphique interfaceGraphique = new InterfaceGraphique();
         Partie partie = new Partie(10, 10, 10, 3);
-        Interface_Graphique interfaceGraphique = new Interface_Graphique();
         interfaceGraphique.show();
-        partie.jouer();
+        partie.menu();
     }
 
 }

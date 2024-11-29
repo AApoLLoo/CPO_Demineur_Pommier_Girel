@@ -25,10 +25,8 @@ import java.util.Scanner;
         System.out.flush();
     }
 
-    public void jouer() {
+    public void menu() {
         Scanner scanner = new Scanner(System.in);
-
-        while (enCours) {
             clearConsole();
             System.out.println("Options :");
             System.out.println("1. Révéler une cellule");
@@ -39,35 +37,10 @@ import java.util.Scanner;
             int choice = scanner.nextInt();
             switch(choice) {
                 case 1:
-                    boolean validInput = false;
-                    while (!validInput) {
-                        System.out.print("Entrez la ligne et la colonne à révéler (ex: 0 1): ");
-                        int ligne = scanner.nextInt();
-                        int colonne = scanner.nextInt();
-                        if (ligne >= 0 && ligne < grille.getLignes() && colonne >= 0 && colonne < grille.getColonnes()) {
-                            validInput = true;
-                            if (grille.estBombe(ligne, colonne)) {
-                                System.out.println("BOUM! Vous avez cliqué sur une bombe. Vous avez perdu une vie.");
-                                vies -= 1;
-                                if (vies == 0) {
-                                    System.out.println("Vous n'avez plus de vies. Vous avez perdu.");
-                                    enCours = false;
-                                }
-                            } else {
-                                grille.revelerCellule(ligne, colonne);
-                                if (grille.aGagne()) {
-                                    System.out.println("Félicitations! Vous avez révélé toutes les cellules sans bombe. Vous avez gagné!");
-                                    enCours = false;
-                                }
-                            }
-                            grille.afficherGrille();
-                        } else {
-                            System.out.println("Coordonnées invalides.");
-                        }
-                    }
-                        break;
+                    jouer();
+                    break;
                 case 2:
-                    System.out.println("Il vous reste "+vies+" vies.");
+                    System.out.println("Il vous reste " + vies + " vies.");
                     break;
                 case 3:
                     grille.afficherGrille();
@@ -78,8 +51,38 @@ import java.util.Scanner;
                 default:
                     System.out.println("Choix invalide.");
             }
-            }
         scanner.close();
+    }
+    public void jouer() {
+        while (enCours) {
+            Scanner scanner = new Scanner(System.in);
+            boolean validInput = false;
+            while (!validInput) {
+                System.out.print("Entrez la ligne et la colonne à révéler (ex: 0 1): ");
+                int ligne = scanner.nextInt();
+                int colonne = scanner.nextInt();
+                if (ligne >= 0 && ligne < grille.getLignes() && colonne >= 0 && colonne < grille.getColonnes()) {
+                    validInput = true;
+                    if (grille.estBombe(ligne, colonne)) {
+                        System.out.println("BOUM! Vous avez cliqué sur une bombe. Vous avez perdu une vie.");
+                        vies -= 1;
+                        if (vies == 0) {
+                            System.out.println("Vous n'avez plus de vies. Vous avez perdu.");
+                            enCours = false;
+                        }
+                    } else {
+                        grille.revelerCellule(ligne, colonne);
+                        if (grille.aGagne()) {
+                            System.out.println("Félicitations! Vous avez révélé toutes les cellules sans bombe. Vous avez gagné!");
+                            enCours = false;
+                        }
+                    }
+                    grille.afficherGrille();
+                } else {
+                    System.out.println("Coordonnées invalides.");
+                }
+            }
+        }
     }
 }
 
