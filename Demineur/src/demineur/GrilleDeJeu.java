@@ -132,4 +132,7 @@ public class GrilleDeJeu {
         }
     }
 
+    public Cellule[][] getGrille() {
+        return grille;
+    }
 }

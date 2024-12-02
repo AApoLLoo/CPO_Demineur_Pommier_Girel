@@ -15,11 +15,22 @@ import java.util.Scanner;
     private final GrilleDeJeu grille;
     private boolean enCours;
     private int vies;
+    private int lignes;
+    private int colonnes;
 
     public Partie(int lignes, int colonnes, int nombreDeBombes, int vies) {
         grille = new GrilleDeJeu(lignes, colonnes, nombreDeBombes);
         enCours = true;
         this.vies = vies;
+        this.lignes = lignes;
+        this.colonnes = colonnes;
+    }
+
+    public int getLignes() {
+        return lignes;
+    }
+    public int getColonnes() {
+        return colonnes;
     }
 
     public void clearConsole() {
@@ -98,6 +109,5 @@ import java.util.Scanner;
         }
     }
 }
-    
 
 

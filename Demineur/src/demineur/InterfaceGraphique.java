@@ -30,10 +30,10 @@ public class InterfaceGraphique extends javax.swing.JFrame{
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        titleL = new javax.swing.JLabel();
+        JButton jButton1 = new JButton();
+        JButton jButton2 = new JButton();
+        JButton jButton3 = new JButton();
+        JLabel titleL = new JLabel();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         titleL.setText("Démineur");
         titleL.setFont(new Font("Arial", Font.BOLD, 56));
@@ -71,7 +71,7 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         getContentPane().removeAll();
         revalidate();
@@ -84,33 +84,44 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         JLabel label = new JLabel("Choix :");
         JButton option1 = new JButton("Révéler une cellule");
         JButton option2 = new JButton("Afficher le nombre de vies restantes");
-        JButton option3 = new JButton("Afficher la grille");
-        JButton option4 = new JButton("Quitter la partie");
+        JButton option3 = new JButton("Quitter la partie");
+        int Lignes = partie.getLignes();
+        int Colonnes = partie.getColonnes();
+
 
         option1.addActionListener(e -> partie.jouer());
         option2.addActionListener(e -> JOptionPane.showMessageDialog(this, "Il vous reste " + partie.getVies() + " vies."));
-        option3.addActionListener(e -> grilleDeJeu());
-        option4.addActionListener(e -> System.exit(0));
-
-        // Add components to the content pane
+        option3.addActionListener(e -> System.exit(0));
+        // Ajouter de contenu à la page
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
         getContentPane().add(label);
+        getContentPane().add(CreateGrid(Lignes,Colonnes));
         getContentPane().add(option1);
         getContentPane().add(option2);
         getContentPane().add(option3);
-        getContentPane().add(option4);
-
         revalidate();
         repaint();
 //GEN-LAST:event_jButton1ActionPerformed
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt){
-
     }
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
         System.exit(0);
-    }                                        
+    }
+    private JPanel CreateGrid(int L, int C){
+        JPanel Grille = new JPanel();
+        Grille.setLayout(new GridLayout());
+        for (int i=0; i < L;i++){
+            for (int j=0; j < C;j++){
+                JLabel cellLabel = new JLabel(i +","+ j,SwingConstants.CENTER);
+                cellLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
+                Grille.add(cellLabel);
+
+            }
+        }
+        return Grille;
+    }
     /**
      * @param args the command line arguments
      */
@@ -137,30 +148,6 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new InterfaceGraphique().setVisible(true));
     }
-    //AFFICHAGE GRILLE DE JEU
-    
-    private void grilleDeJeu() {
-    // Supprime tout ce qui est affiché dans le contenu actuel
-    getContentPane().removeAll();
 
-    // Crée un panneau pour la grille
-    JPanel gridPanel = new JPanel();
-    int rows = 10; // Nombre de lignes (peut être dynamique en fonction du jeu)
-    int cols = 10; // Nombre de colonnes (peut être dynamique en fonction du jeu)
-    gridPanel.setLayout(new GridLayout(rows, cols));
-
-    // Remplir la grille avec des boutons ou des étiquettes
-    for (int i = 0; i < rows; i++) {
-        for (int j = 0; j < cols; j++) {
-            JButton cell = new JButton(); // Peut être JLabel si vous voulez une grille statique
-            cell.setText("1"); // Placeholder, mettez ici le contenu souhaité
-            gridPanel.add(cell);
-        }
-    }
-    }
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JLabel titleL;
 }
 
