@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package demineur;
+import javax.swing.*;
 import java.util.Scanner;
 
 /**
@@ -20,39 +21,41 @@ import java.util.Scanner;
         enCours = true;
         this.vies = vies;
     }
-    public void clearConsole(){
+
+    public void clearConsole() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
 
     public void menu() {
         Scanner scanner = new Scanner(System.in);
-            clearConsole();
-            System.out.println("Options :");
-            System.out.println("1. Révéler une cellule");
-            System.out.println("2. Afficher le nombre de vies restantes");
-            System.out.println("3. Afficher la grille");
-            System.out.println("4. Quitter la partie");
-            System.out.print("Entrez votre choix : ");
-            int choice = scanner.nextInt();
-            switch(choice) {
-                case 1:
-                    jouer();
-                    break;
-                case 2:
-                    System.out.println("Il vous reste " + vies + " vies.");
-                    break;
-                case 3:
-                    grille.afficherGrille();
-                    break;
-                case 4:
-                    enCours = false;
-                    break;
-                default:
-                    System.out.println("Choix invalide.");
-            }
+        clearConsole();
+        System.out.println("Options :");
+        System.out.println("1. Révéler une cellule");
+        System.out.println("2. Afficher le nombre de vies restantes");
+        System.out.println("3. Afficher la grille");
+        System.out.println("4. Quitter la partie");
+        System.out.print("Entrez votre choix : ");
+        int choice = scanner.nextInt();
+        switch (choice) {
+            case 1:
+                jouer();
+                break;
+            case 2:
+                System.out.println("Il vous reste " + vies + " vies.");
+                break;
+            case 3:
+                grille.afficherGrille();
+                break;
+            case 4:
+                enCours = false;
+                break;
+            default:
+                System.out.println("Choix invalide.");
+        }
         scanner.close();
     }
+
     public int getVies() {
         return vies;
     }
@@ -95,8 +98,6 @@ import java.util.Scanner;
         }
     }
 }
-
-
     
 
 
