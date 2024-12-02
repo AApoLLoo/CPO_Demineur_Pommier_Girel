@@ -4,7 +4,8 @@
  */
 package demineur;
 import javax.swing.*;
-import java.awt.GridLayout; 
+import java.awt.*;
+        
 /**
  *
  * @author pommi
@@ -16,14 +17,8 @@ public class InterfaceGraphique extends javax.swing.JFrame{
      */
     public InterfaceGraphique() {
         initComponents();
-        jTextField1.setColumns(100);
-        jTextField1.setText("Bienvenue dans le démineur");
-        jTextField1.setEditable(false);
-        jButton1.setText("Entrer dans le jeu");
-        jButton2.setText("Afficher le nombre de vies restantes");
-        jButton3.setText("Afficher la grille");
-        jButton4.setText("Quitter la partie");
-        jButton3.addActionListener(e -> grilleDeJeu());
+        setSize(1920, 1080);
+        setResizable(false);
     }
         
     /**
@@ -38,50 +33,39 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jTextField1 = new javax.swing.JTextField();
-
+        titleL = new javax.swing.JLabel();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        titleL.setText("Démineur");
+        titleL.setFont(new Font("Arial", Font.BOLD, 56));
         jButton1.setText("Entrer dans le jeu");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        jButton2.setText("Sortir du jeu");
-
-        jTextField1.setText("jTextField1");
-        jTextField1.addActionListener(this::jTextField1ActionPerformed);
+        jButton2.setText("Paramètres");
+        jButton2.addActionListener(this::jButton2ActionPerformed);
+        jButton3.setText("Sortir du jeu");
+        jButton3.addActionListener(this::jButton3ActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(246, 246, 246)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton4)
-                            .addComponent(jButton3)
-                            .addComponent(jButton2)
-                            .addComponent(jButton1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(99, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(titleL)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButton3)
+                                        .addComponent(jButton2)
+                                        .addComponent(jButton1))
+                                .addContainerGap(99, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
-                .addComponent(jButton1)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2)
-                .addGap(18, 18, 18)
-                .addComponent(jButton3)
-                .addGap(18, 18, 18)
-                .addComponent(jButton4)
-                .addContainerGap(30, Short.MAX_VALUE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(titleL)
+                                .addComponent(jButton1)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton3)
+                                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         pack();
@@ -97,7 +81,7 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         Partie partie = new Partie(10, 10, 10, 3);
 
         // Display the menu options
-        JLabel label = new JLabel("Options:");
+        JLabel label = new JLabel("Choix :");
         JButton option1 = new JButton("Révéler une cellule");
         JButton option2 = new JButton("Afficher le nombre de vies restantes");
         JButton option3 = new JButton("Afficher la grille");
@@ -105,7 +89,7 @@ public class InterfaceGraphique extends javax.swing.JFrame{
 
         option1.addActionListener(e -> partie.jouer());
         option2.addActionListener(e -> JOptionPane.showMessageDialog(this, "Il vous reste " + partie.getVies() + " vies."));
-        option3.addActionListener(e -> partie.getGrille().afficherGrille());
+        option3.addActionListener(e -> grilleDeJeu());
         option4.addActionListener(e -> System.exit(0));
 
         // Add components to the content pane
@@ -120,11 +104,13 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         repaint();
 //GEN-LAST:event_jButton1ActionPerformed
     }
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt){
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    }
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
+        System.exit(0);
+    }                                        
     /**
      * @param args the command line arguments
      */
@@ -167,15 +153,14 @@ public class InterfaceGraphique extends javax.swing.JFrame{
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             JButton cell = new JButton(); // Peut être JLabel si vous voulez une grille statique
-            cell.setText(""); // Placeholder, mettez ici le contenu souhaité
+            cell.setText("1"); // Placeholder, mettez ici le contenu souhaité
             gridPanel.add(cell);
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+        }
+    }
+    }
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JTextField jTextField1;
-    // End of variables declaration//GEN-END:variables
+    private javax.swing.JLabel titleL;
 }
 
