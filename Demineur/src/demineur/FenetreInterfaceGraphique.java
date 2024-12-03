@@ -79,6 +79,7 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         Partie partie = new Partie(10, 10, 10, 3);
 
         // Display the menu options
+        JLabel label = new JLabel("Choix :");
         JButton option1 = new JButton("Révéler une cellule");
         JButton option2 = new JButton("Afficher le nombre de vies restantes");
         JButton option3 = new JButton("Quitter la partie");
@@ -91,6 +92,7 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
 
         // Add content to the page
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane().add(label);
         getContentPane().add(CreateGrid(Lignes, Colonnes));
         getContentPane().add(option1);
         getContentPane().add(option2);
@@ -108,12 +110,14 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         JPanel Grille = new JPanel();
         Grille.setLayout(new GridLayout(L, C));
         Grille.setPreferredSize(new Dimension(500, 500));
-        grilleDeJeu.getGrille();
+        Cellule[][] grille = grilleDeJeu.getGrille();
 
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < C; j++) {
                 JButton CelluleButton = new JButton();
                 CelluleButton.setText(""); // Initially blank
+                int finalI = i;
+                int finalJ = j;
                 Grille.add(CelluleButton);
             }
         }
@@ -129,7 +133,7 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
                 JButton cellButton = (JButton) gridPanel.getComponent(i * grille[i].length + j);
                 int finalI = i;
                 int finalJ = j;
-                cellButton.addActionListener(_ -> {
+                cellButton.addActionListener(e -> {
                     if (!grille[finalI][finalJ].estRevelee()) {
                         revealCellWithLife(finalI, finalJ, cellButton, partie);
                     }
