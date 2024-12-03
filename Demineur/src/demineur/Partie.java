@@ -3,7 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package demineur;
-import javax.swing.*;
 import java.util.Scanner;
 
 /**
@@ -15,8 +14,8 @@ import java.util.Scanner;
     private final GrilleDeJeu grille;
     private boolean enCours;
     private int vies;
-    private int lignes;
-    private int colonnes;
+    private final int lignes;
+    private final int colonnes;
 
     public Partie(int lignes, int colonnes, int nombreDeBombes, int vies) {
         grille = new GrilleDeJeu(lignes, colonnes, nombreDeBombes);
@@ -70,9 +69,24 @@ import java.util.Scanner;
     public int getVies() {
         return vies;
     }
+    public boolean toutesLesCellulesRevelees() {
+        for (Cellule[] ligne : grille.getGrille()) {
+            for (Cellule cell : ligne) {
+                if (!cell.estRevelee() && !cell.contientBombe()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 
-    public GrilleDeJeu getGrille() {
-        return grille;
+    public void perdreVie() {
+        vies--;
+    }
+
+
+    public Cellule[][] getGrille() {
+        return grille.getGrille();
     }
 
     public void jouer() {

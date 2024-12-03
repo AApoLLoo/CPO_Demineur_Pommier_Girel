@@ -10,12 +10,11 @@ import java.awt.*;
  *
  * @author pommi
  */
-public class InterfaceGraphique extends javax.swing.JFrame{
-    
-    /**
-     * Creates new form InterfaceGraphique
-     */
-    public InterfaceGraphique() {
+public class FenetreInterfaceGraphique extends javax.swing.JFrame{
+
+    private final GrilleDeJeu grilleDeJeu;
+    public FenetreInterfaceGraphique(GrilleDeJeu grilleDeJeu) {
+        this.grilleDeJeu = grilleDeJeu;
         initComponents();
         setSize(1920, 1080);
         setResizable(false);
@@ -72,7 +71,6 @@ public class InterfaceGraphique extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
         getContentPane().removeAll();
         revalidate();
         repaint();
@@ -81,27 +79,24 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         Partie partie = new Partie(10, 10, 10, 3);
 
         // Display the menu options
-        JLabel label = new JLabel("Choix :");
         JButton option1 = new JButton("Révéler une cellule");
         JButton option2 = new JButton("Afficher le nombre de vies restantes");
         JButton option3 = new JButton("Quitter la partie");
         int Lignes = partie.getLignes();
         int Colonnes = partie.getColonnes();
 
+        option1.addActionListener(_ -> enableCellSelection(partie));
+        option2.addActionListener(_ -> JOptionPane.showMessageDialog(this, "Il vous reste " + partie.getVies() + " vies."));
+        option3.addActionListener(_ -> System.exit(0));
 
-        option1.addActionListener(e -> partie.jouer());
-        option2.addActionListener(e -> JOptionPane.showMessageDialog(this, "Il vous reste " + partie.getVies() + " vies."));
-        option3.addActionListener(e -> System.exit(0));
-        // Ajouter de contenu à la page
+        // Add content to the page
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
-        getContentPane().add(label);
-        getContentPane().add(CreateGrid(Lignes,Colonnes));
+        getContentPane().add(CreateGrid(Lignes, Colonnes));
         getContentPane().add(option1);
         getContentPane().add(option2);
         getContentPane().add(option3);
         revalidate();
         repaint();
-//GEN-LAST:event_jButton1ActionPerformed
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt){
     }
@@ -109,18 +104,66 @@ public class InterfaceGraphique extends javax.swing.JFrame{
         // TODO add your handling code here:
         System.exit(0);
     }
-    private JPanel CreateGrid(int L, int C){
+    private JPanel CreateGrid(int L, int C) {
         JPanel Grille = new JPanel();
-        Grille.setLayout(new GridLayout());
-        for (int i=0; i < L;i++){
-            for (int j=0; j < C;j++){
-                JLabel cellLabel = new JLabel(i +","+ j,SwingConstants.CENTER);
-                cellLabel.setBorder(BorderFactory.createLineBorder(Color.BLUE));
-                Grille.add(cellLabel);
+        Grille.setLayout(new GridLayout(L, C));
+        Grille.setPreferredSize(new Dimension(500, 500));
+        grilleDeJeu.getGrille();
 
+        for (int i = 0; i < L; i++) {
+            for (int j = 0; j < C; j++) {
+                JButton CelluleButton = new JButton();
+                CelluleButton.setText(""); // Initially blank
+                Grille.add(CelluleButton);
             }
         }
         return Grille;
+    }
+    private void enableCellSelection(Partie partie) {
+        Cellule[][] grille = partie.getGrille();
+        Component[] components = getContentPane().getComponents();
+        JPanel gridPanel = (JPanel) components[1]; // Assuming the grid is the second component
+
+        for (int i = 0; i < grille.length; i++) {
+            for (int j = 0; j < grille[i].length; j++) {
+                JButton cellButton = (JButton) gridPanel.getComponent(i * grille[i].length + j);
+                int finalI = i;
+                int finalJ = j;
+                cellButton.addActionListener(_ -> {
+                    if (!grille[finalI][finalJ].estRevelee()) {
+                        revealCellWithLife(finalI, finalJ, cellButton, partie);
+                    }
+                });
+            }
+        }
+    }
+    private void revealCellWithLife(int i, int j, JButton cellButton, Partie partie) {
+        Cellule[][] grille = partie.getGrille();
+        Cellule cell = grille[i][j];
+
+        if (cell.estRevelee()) {
+            return; // Already revealed, do nothing
+        }
+
+        cell.reveler(); // Reveal the cell
+        if (cell.contientBombe()) {
+            partie.perdreVie();
+            JOptionPane.showMessageDialog(this, "Vous avez cliqué sur une bombe ! Il vous reste " + partie.getVies() + " vies.");
+            cellButton.setText("*"); // Indicate bomb visually
+        } else {
+            cellButton.setText(String.valueOf(cell.getBombesAdjacentes()));
+        }
+
+        if (partie.getVies() <= 0) {
+            JOptionPane.showMessageDialog(this, "Game Over! Vous avez perdu toutes vos vies.");
+            System.exit(0);
+        } else if (partie.toutesLesCellulesRevelees()) {
+            JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !");
+            System.exit(0);
+        }
+
+        revalidate();
+        repaint();
     }
     /**
      * @param args the command line arguments
@@ -140,13 +183,14 @@ public class InterfaceGraphique extends javax.swing.JFrame{
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
                  UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InterfaceGraphique.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FenetreInterfaceGraphique.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new InterfaceGraphique().setVisible(true));
+        GrilleDeJeu grilledejeu = new GrilleDeJeu(10, 10, 10);
+        java.awt.EventQueue.invokeLater(() -> new FenetreInterfaceGraphique(grilledejeu).setVisible(true));
     }
 
 }
