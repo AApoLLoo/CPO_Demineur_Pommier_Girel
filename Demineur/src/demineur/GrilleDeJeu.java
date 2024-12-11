@@ -16,19 +16,19 @@ public class GrilleDeJeu {
         this.lignes = lignes;
         this.colonnes = colonnes;
         this.nombreDeBombes = nombreDeBombes;
-        Random rand = new Random();
+        //Random rand = new Random();
         grille= new Cellule[lignes][colonnes];
                 for (int i = 0; i < lignes; i++) {
-                    for (int j = 0; j < colonnes; j++) {
-                        if (rand.nextDouble() < 0.1) { // 1à% des cases sont des murs
-                            grille[i][j] = null;
-                        } else {
-                            grille[i][j] = new Cellule();
+                  for (int j = 0; j < colonnes; j++) {
+                    //    if (rand.nextDouble() < 0.1) { // 10 des cases sont des murs
+                      //      grille[i][j] = null;
+                        //} else {
+                          grille[i][j] = new Cellule();
                         }
                     }
 
             // Other methods
-        }
+        //}
         // Placer les bombes de manière aléatoire
         placerBombes();
         // Calculer le nombre de bombes adjacentes pour chaque cellule

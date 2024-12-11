@@ -119,8 +119,6 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
             for (int j = 0; j < C; j++) {
                 JButton CelluleButton = new JButton();
                 CelluleButton.setText(""); // Initially blank
-                int finalI = i;
-                int finalJ = j;
                 gridPanel.add(CelluleButton);
             }
         }
