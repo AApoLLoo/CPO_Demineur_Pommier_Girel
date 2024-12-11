@@ -11,11 +11,13 @@ public class GrilleDeJeu {
     private final int lignes;
     private final int colonnes;
     private final int nombreDeBombes;
+    public final int vies;
 
-    public GrilleDeJeu(int lignes, int colonnes, int nombreDeBombes) {
+    public GrilleDeJeu(int lignes, int colonnes, int nombreDeBombes, int vies) {
         this.lignes = lignes;
         this.colonnes = colonnes;
         this.nombreDeBombes = nombreDeBombes;
+        this.vies = vies;
         //Random rand = new Random();
         grille= new Cellule[lignes][colonnes];
                 for (int i = 0; i < lignes; i++) {
@@ -33,6 +35,12 @@ public class GrilleDeJeu {
         placerBombes();
         // Calculer le nombre de bombes adjacentes pour chaque cellule
         calculerBombesAdjacentes();
+    }
+    public int getNombreDeBombes(){
+        return nombreDeBombes;
+    }
+    public int getVies(){
+        return vies;
     }
     public int getLignes(){
         return lignes;

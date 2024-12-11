@@ -18,7 +18,7 @@ import java.util.Scanner;
     private final int colonnes;
 
     public Partie(int lignes, int colonnes, int nombreDeBombes, int vies) {
-        grille = new GrilleDeJeu(lignes, colonnes, nombreDeBombes);
+        grille = new GrilleDeJeu(lignes, colonnes, nombreDeBombes, vies);
         enCours = true;
         this.vies = vies;
         this.lignes = lignes;
