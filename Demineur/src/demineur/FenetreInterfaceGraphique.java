@@ -200,8 +200,8 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
 
         if (cell.contientBombe()) {
             partie.perdreVie();
-            cellButton.setText("*"); // Indicate bomb
-            cellButton.setBackground(Color.RED);
+            cellButton.setText("💣"); // Indicate bomb
+            cellButton.setBackground(Color.RED); // Couleur du texte (blanc)
             JOptionPane.showMessageDialog(this, "Vous avez cliqué sur une bombe ! Il vous reste " + partie.getVies() + " vies.");
             if (partie.getVies() <= 0) {
                 JOptionPane.showMessageDialog(this, "PERDUUUU ! Vous avez perdu toutes vos vies.");
