@@ -13,6 +13,8 @@ import java.awt.*;
 public class FenetreInterfaceGraphique extends javax.swing.JFrame{
 
     private final GrilleDeJeu grilleDeJeu;
+    private JPanel gridPanel;
+
     public FenetreInterfaceGraphique(GrilleDeJeu grilleDeJeu) {
         this.grilleDeJeu = grilleDeJeu;
         initComponents();
@@ -107,9 +109,10 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         System.exit(0);
     }
     private JPanel CreateGrid(int L, int C) {
-        JPanel Grille = new JPanel();
-        Grille.setLayout(new GridLayout(L, C));
-        Grille.setPreferredSize(new Dimension(500, 500));
+        gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(L, C));
+        gridPanel.setPreferredSize(new Dimension(500, 500));
+
         Cellule[][] grille = grilleDeJeu.getGrille();
 
         for (int i = 0; i < L; i++) {
@@ -118,10 +121,10 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
                 CelluleButton.setText(""); // Initially blank
                 int finalI = i;
                 int finalJ = j;
-                Grille.add(CelluleButton);
+                gridPanel.add(CelluleButton);
             }
         }
-        return Grille;
+        return gridPanel;
     }
     private void enableCellSelection(Partie partie) {
         Cellule[][] grille = partie.getGrille();
@@ -141,34 +144,52 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
             }
         }
     }
-    private void revealCellWithLife(int i, int j, JButton cellButton, Partie partie) {
+    private void revealCellWithLife(int x, int y, JButton cellButton, Partie partie) {
         Cellule[][] grille = partie.getGrille();
-        Cellule cell = grille[i][j];
-
+        Cellule cell = grille[x][y];
         if (cell.estRevelee()) {
-            return; // Already revealed, do nothing
+            return; // Already revealed
         }
 
-        cell.reveler(); // Reveal the cell
+        cell.reveler();
+        cellButton.setEnabled(false); // Disable button after revealing
+
         if (cell.contientBombe()) {
             partie.perdreVie();
+            cellButton.setText("*"); // Indicate bomb
+            cellButton.setBackground(Color.RED);
             JOptionPane.showMessageDialog(this, "Vous avez cliqué sur une bombe ! Il vous reste " + partie.getVies() + " vies.");
-            cellButton.setText("*"); // Indicate bomb visually
-        } else {
-            cellButton.setText(String.valueOf(cell.getBombesAdjacentes()));
+            if (partie.getVies() <= 0) {
+                JOptionPane.showMessageDialog(this, "PERDUUUU ! Vous avez perdu toutes vos vies.");
+                System.exit(0);
+            }
+            return; // Stop further propagation
         }
 
-        if (partie.getVies() <= 0) {
-            JOptionPane.showMessageDialog(this, "Game Over! Vous avez perdu toutes vos vies.");
-            System.exit(0);
-        } else if (partie.toutesLesCellulesRevelees()) {
+        int adjacentBombs = cell.getBombesAdjacentes();
+        cellButton.setText(adjacentBombs > 0 ? String.valueOf(adjacentBombs) : "");
+        cellButton.setBackground(Color.LIGHT_GRAY);
+
+        if (adjacentBombs == 0) {
+            int[] directions = {-1, 0, 1};
+            for (int di : directions) {
+                for (int dj : directions) {
+                    if (di == 0 && dj == 0) continue; // Skip current cell
+                    int newx = x + di;
+                    int newy = y + dj;
+                    if (newx >= 0 && newx < grille.length && newy >= 0 && newy < grille[0].length) {
+                        revealCellWithLife(newx, newy, (JButton) gridPanel.getComponent(newx * grille[0].length + newy), partie);
+                    }
+                }
+            }
+        }
+
+        if (partie.toutesLesCellulesRevelees()) {
             JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !");
             System.exit(0);
         }
-
-        revalidate();
-        repaint();
     }
+
     /**
      * @param args the command line arguments
      */
