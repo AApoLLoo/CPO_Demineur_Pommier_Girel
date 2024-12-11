@@ -20,8 +20,6 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         initComponents();
         setSize(1920, 1080);
         setResizable(false);
-        getContentPane().setBackground(new Color(0x1D2F5D));
-
     }
 
     /**
@@ -40,7 +38,6 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         titleL.setText("Démineur");
         titleL.setFont(new Font("Arial", Font.BOLD, 56));
-        titleL.setForeground(new Color(126, 100, 44));
         jButton1.setText("Entrer dans le jeu");
         jButton1.addActionListener(this::jButton1ActionPerformed);
         jButton2.setText("Paramètres");
@@ -84,6 +81,7 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         Partie partie = new Partie(10, 10, 10, 3);
 
         // Display the menu options
+        JLabel label = new JLabel("Choix :");
         JButton option1 = new JButton("Révéler une cellule");
         JButton option2 = new JButton("Afficher le nombre de vies restantes");
         JButton option3 = new JButton("Quitter la partie");
@@ -96,6 +94,7 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
 
         // Add content to the page
         getContentPane().setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+        getContentPane().add(label);
         getContentPane().add(CreateGrid(Lignes, Colonnes));
         getContentPane().add(option1);
         getContentPane().add(option2);
@@ -106,8 +105,6 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt){
             // Créer un panneau de paramètres
             JPanel panel = new JPanel(new GridLayout(4, 2));
-            panel.setBackground(new Color(162, 42, 42));  // Fond blanc
-            panel.setBorder(BorderFactory.createTitledBorder("Paramètres du jeu")); // Encadrer les options
 
             // Création des champs de saisie pour le nombre de lignes, colonnes et bombes
             JTextField lignesField = new JTextField(String.valueOf(grilleDeJeu.getLignes()));
@@ -161,27 +158,18 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
         gridPanel.setLayout(new GridLayout(L, C));
         gridPanel.setPreferredSize(new Dimension(500, 500));
 
+        Cellule[][] grille = grilleDeJeu.getGrille();
+
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < C; j++) {
                 JButton CelluleButton = new JButton();
-                CelluleButton.setText(""); // Pas de texte dans le bouton pour la grille
-
-                // Définir la taille du bouton
+                CelluleButton.setText("");
                 CelluleButton.setPreferredSize(new Dimension(50, 50));
-
-                // Appliquer les améliorations visuelles
-                CelluleButton.setBackground(new Color(141, 23, 23)); // Couleur de fond douce
-                CelluleButton.setBorder(BorderFactory.createLineBorder(Color.GRAY)); // Bordure légère
-                CelluleButton.setFont(new Font("Arial", Font.PLAIN, 18));  // Taille de texte ajustée
-                CelluleButton.setFocusable(false); // Enlever le focus
-
-                // Ajouter le bouton à la grille
                 gridPanel.add(CelluleButton);
             }
         }
         return gridPanel;
     }
-
     private void enableCellSelection(Partie partie) {
         Cellule[][] grille = partie.getGrille();
         Component[] components = getContentPane().getComponents();
@@ -192,15 +180,15 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
                 JButton cellButton = (JButton) gridPanel.getComponent(i * grille[i].length + j);
                 int finalI = i;
                 int finalJ = j;
-                cellButton.addActionListener(_ -> {
+                cellButton.addActionListener(e -> {
                     if (!grille[finalI][finalJ].estRevelee()) {
-                        Revelerunecellule(finalI, finalJ, cellButton, partie);
+                        revealCellWithLife(finalI, finalJ, cellButton, partie);
                     }
                 });
             }
         }
     }
-    private void Revelerunecellule(int x, int y, JButton cellButton, Partie partie) {
+    private void revealCellWithLife(int x, int y, JButton cellButton, Partie partie) {
         Cellule[][] grille = partie.getGrille();
         Cellule cell = grille[x][y];
         if (cell.estRevelee()) {
@@ -234,7 +222,7 @@ public class FenetreInterfaceGraphique extends javax.swing.JFrame{
                     int newx = x + di;
                     int newy = y + dj;
                     if (newx >= 0 && newx < grille.length && newy >= 0 && newy < grille[0].length) {
-                        Revelerunecellule(newx, newy, (JButton) gridPanel.getComponent(newx * grille[0].length + newy), partie);
+                        revealCellWithLife(newx, newy, (JButton) gridPanel.getComponent(newx * grille[0].length + newy), partie);
                     }
                 }
             }
