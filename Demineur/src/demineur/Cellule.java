@@ -13,11 +13,15 @@ public class Cellule {
     private boolean bombe;
     private boolean revelee;
     private int bombesAdjacentes;
+    private boolean marquee;
+
 
     public Cellule() {
         this.bombe = false;
         this.revelee = false;
         this.bombesAdjacentes = 0;
+        this.marquee = false;
+
     }
 
     public boolean contientBombe() {
@@ -42,6 +46,19 @@ public class Cellule {
 
     public void setBombesAdjacentes(int bombesAdjacentes) {
         this.bombesAdjacentes = bombesAdjacentes;
+    }
+
+    public boolean estMarquee() {
+        return marquee;
+    }
+
+    public void demarquer() {
+        this.marquee = false;
+
+    }
+
+    public void marquer() {
+        this.marquee = true;
     }
 }
 

@@ -2,6 +2,8 @@ package demineur;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class FenetreInterfaceGraphique extends JFrame {
 
@@ -22,6 +24,7 @@ public class FenetreInterfaceGraphique extends JFrame {
         JLabel titleL = new JLabel();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         titleL.setText("Démineur");
+        titleL.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         titleL.setFont(new Font("Arial", Font.BOLD, 56));
         jButton1.setText("Entrer dans le jeu");
         jButton1.addActionListener(this::jButton1ActionPerformed);
@@ -33,23 +36,23 @@ public class FenetreInterfaceGraphique extends JFrame {
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(titleL)
-                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                                         .addComponent(jButton3)
                                         .addComponent(jButton2)
                                         .addComponent(jButton1))
-                                .addContainerGap(99, Short.MAX_VALUE))
+                                .addContainerGap(250, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(titleL)
                                 .addComponent(jButton1)
-                                .addGap(18, 18, 18)
+                                .addGap(18, 25, 50)
                                 .addComponent(jButton2)
-                                .addGap(18, 18, 18)
+                                .addGap(18, 25, 50)
                                 .addComponent(jButton3)
                                 .addContainerGap(30, Short.MAX_VALUE))
         );
@@ -66,7 +69,7 @@ public class FenetreInterfaceGraphique extends JFrame {
         Partie partie = new Partie(grilleDeJeu.getLignes(), grilleDeJeu.getColonnes(), grilleDeJeu.getNombreDeBombes(), grilleDeJeu.getVies());
 
         // Display the menu options
-        JLabel label = new JLabel("Choix :");
+        JLabel label = new JLabel("Marquer une case -> clic droit");
         JButton option1 = new JButton("Révéler une cellule");
         JButton option2 = new JButton("Afficher le nombre de vies restantes");
         JButton option3 = new JButton("Quitter la partie");
@@ -161,7 +164,6 @@ public class FenetreInterfaceGraphique extends JFrame {
         gridPanel.setLayout(new GridLayout(L, C));
         gridPanel.setPreferredSize(new Dimension(500, 500));
 
-
         for (int i = 0; i < L; i++) {
             for (int j = 0; j < C; j++) {
                 JButton CelluleButton = new JButton();
@@ -186,6 +188,15 @@ public class FenetreInterfaceGraphique extends JFrame {
                 cellButton.addActionListener(_ -> {
                     if (!grille[finalI][finalJ].estRevelee()) {
                         revealCellWithLife(finalI, finalJ, cellButton, partie);
+                    }
+                });
+
+                cellButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        if (e.getButton() == MouseEvent.BUTTON3) { // Clic-droit
+                            toggleFlag(finalI, finalJ, cellButton, partie);
+                        }
                     }
                 });
             }
@@ -235,6 +246,22 @@ public class FenetreInterfaceGraphique extends JFrame {
         if (partie.toutesLesCellulesRevelees()) {
             JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !");
             System.exit(0);
+        }
+    }
+
+    private void toggleFlag(int x, int y, JButton cellButton, Partie partie) {
+        Cellule[][] grille = partie.getGrille();
+        Cellule cell = grille[x][y];
+        if (!cell.estRevelee()) {
+            if (cell.estMarquee()) {
+                cell.demarquer();
+                cellButton.setText("");
+                cellButton.setBackground(null);
+            } else {
+                cell.marquer();
+                cellButton.setText("🏴"); // Indicate flag
+                cellButton.setBackground(Color.YELLOW);
+            }
         }
     }
 
